@@ -1,4 +1,5 @@
-
+import React from "react";
+import ReactDOM from 'react-dom';
 
 var file_container = document.querySelector(".files");
 
@@ -8,9 +9,9 @@ var file_container = document.querySelector(".files");
 
 
 
-const itemImg = {
+// const itemImg = {
 
-};
+// };
 
 // ReactDOM.render(
 //     <ItemImg />,

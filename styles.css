@@ -1,0 +1,25 @@
+.blog-header {
+  line-height: 1;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.blog-header-logo {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 2.25rem;
+}
+
+.blog-header-logo:hover {
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+.plus-search-img {
+    margin: 1rem 5rem 1rem 1rem;
+}
+
+.file-container {
+    margin: 1rem 5rem 1rem 5rem;
+}

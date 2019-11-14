@@ -1,56 +1,16 @@
 import React from "react";
 import ReactDOM from 'react-dom';
+import {data} from './data.js';
 
 var file_container = document.querySelector(".files");
+var str = JSON.stringify(data);
+// function Table(props){
 
-// function ItemImg(props){
-//     return (<img src="img/file.svg"/>)
 // }
 
 
 
-// const itemImg = {
-
-// };
-
-// ReactDOM.render(
-//     <ItemImg />,
-//     file_container
-// );
-function BoilingVerdict(props) {
-  if (props.celsius >= 100) {
-    return <p>The water would boil.</p>;
-  }
-  return <p>The water would not boil.</p>;
-}
-
-class Calculator extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {temperature: ''};
-  }
-
-  handleChange(e) {
-    this.setState({temperature: e.target.value});
-  }
-
-  render() {
-    const temperature = this.state.temperature;
-    return (
-      <fieldset>
-        <legend>Enter temperature in Celsius:</legend>
-        <input
-          value={temperature}
-          onChange={this.handleChange} />
-        <BoilingVerdict
-          celsius={parseFloat(temperature)} />
-      </fieldset>
-    );
-  }
-}
-
 ReactDOM.render(
-  <Calculator />,
+  
   file_container
 );

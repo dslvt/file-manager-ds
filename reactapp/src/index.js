@@ -1,137 +1,162 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import {data} from './data.js';
+import FileBrowser, {Icons} from 'react-keyed-file-browser'
+
 
 var file_container = document.querySelector(".files");
-var current_folder = "";
-// function Table(props){
 
-// }
-function getRootDir(){
-  let rootDir = data[0]["path"];
-  for (let i = 0; i < data.length; i++){
-    if (rootDir.length < data[i]["path"]){
-      rootDir = data[i]["path"];
-    }
+class NestedEditableDemo extends React.Component {
+  state = {
+    files: [
+      {
+        key: 'photos/animals/cat in a hat.png',
+        size: 1.5 * 1024 * 1024,
+      },
+      {
+        key: 'photos/animals/kitten_ball.png',
+        size: 545 * 1024,
+      },
+      {
+        key: 'photos/animals/elephants.png',
+        size: 52 * 1024,
+      },
+      {
+        key: 'photos/funny fall.gif',
+        size: 13.2 * 1024 * 1024,
+      },
+      {
+        key: 'photos/holiday.jpg',
+        size: 85 * 1024,
+      },
+      {
+        key: 'documents/letter chunks.doc',
+        size: 480 * 1024,
+      },
+      {
+        key: 'documents/export.pdf',
+        size: 4.2 * 1024 * 1024,
+      },
+    ],
   }
-  return rootDir;
+
+  handleCreateFolder = (key) => {
+    this.setState(state => {
+      state.files = state.files.concat([{
+        key: key,
+      }])
+      return state
+    })
+  }
+  handleCreateFiles = (files, prefix) => {
+    this.setState(state => {
+      const newFiles = files.map((file) => {
+        let newKey = prefix
+        if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
+          newKey += '/'
+        }
+        newKey += file.name
+        return {
+          key: newKey,
+          size: file.size,
+        }
+      })
+
+      const uniqueNewFiles = []
+      newFiles.map((newFile) => {
+        let exists = false
+        state.files.map((existingFile) => {
+          if (existingFile.key === newFile.key) {
+            exists = true
+          }
+        })
+        if (!exists) {
+          uniqueNewFiles.push(newFile)
+        }
+      })
+      state.files = state.files.concat(uniqueNewFiles)
+      return state
+    })
+  }
+  handleRenameFolder = (oldKey, newKey) => {
+    this.setState(state => {
+      const newFiles = []
+      state.files.map((file) => {
+        if (file.key.substr(0, oldKey.length) === oldKey) {
+          newFiles.push({
+            ...file,
+            key: file.key.replace(oldKey, newKey),
+          })
+        } else {
+          newFiles.push(file)
+        }
+      })
+      state.files = newFiles
+      return state
+    })
+  }
+  handleRenameFile = (oldKey, newKey) => {
+    this.setState(state => {
+      const newFiles = []
+      state.files.map((file) => {
+        if (file.key === oldKey) {
+          newFiles.push({
+            ...file,
+            key: newKey,
+          })
+        } else {
+          newFiles.push(file)
+        }
+      })
+      state.files = newFiles
+      return state
+    })
+  }
+  handleDeleteFolder = (folderKey) => {
+    this.setState(state => {
+      const newFiles = []
+      state.files.map((file) => {
+        if (file.key.substr(0, folderKey.length) !== folderKey) {
+          newFiles.push(file)
+        }
+      })
+      state.files = newFiles
+      return state
+    })
+  }
+  handleDeleteFile = (fileKey) => {
+    this.setState(state => {
+      const newFiles = []
+      state.files.map((file) => {
+        if (file.key !== fileKey) {
+          newFiles.push(file)
+        }
+      })
+      state.files = newFiles
+      return state
+    })
+  }
+
+  render() {
+    return (
+      <FileBrowser
+        files={this.state.files}
+        icons={Icons.FontAwesome(4)}
+
+        onCreateFolder={this.handleCreateFolder}
+        onCreateFiles={this.handleCreateFiles}
+        onMoveFolder={this.handleRenameFolder}
+        onMoveFile={this.handleRenameFile}
+        onRenameFolder={this.handleRenameFolder}
+        onRenameFile={this.handleRenameFile}
+        onDeleteFolder={this.handleDeleteFolder}
+        onDeleteFile={this.handleDeleteFile}
+      />
+    )
+  }
 }
 
-function openFile(){
-
-}
-
-function loadNewPage(){
-  React.unmountComponentAtNode(document.getElementById('cont'));
-  // ReactDOM.render(
-  //   <Table path={current_folder} />,
-  //   file_container
-  // );
-}
-
-class Cell extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {type: props.st["type"], name: props.st["name"], path: props.st["path"]};
-    this.handle = props.handle;
-  }
-
-  handleClick = (newPath) => {
-    if(this.state.type == "file"){
-      openFile();
-    }else{
-      current_folder += this.state.name + "/";
-      this.handle(current_folder);
-      console.log(current_folder);
-    }
-  }
-
-  render(){
-    let image;
-    if (this.state.type === "file"){
-      image = <img src="img/file.svg"/>
-    }else{
-      image = <img src="img/folder.svg"/>
-    }
-
-    return(
-      <button onClick={this.handleClick.bind(this, this.state.path)}>
-        {image}
-        <p>{this.state.name}</p>
-      </button>
-    );
-  }
-}
-
-class Table extends React.Component {
-  constructor(props){
-    super(props);
-    var handleToUpdate = this.handleToUpdate.bind(this);
-    this.state = {path: props.path};
-    this.revData = [];
-    for (let i = 0; i < data.length; i++){
-      if(data[i]["path"] == this.state.path){
-        this.revData.push(data[i]);
-        
-      }
-    }
-  }
-
-  handleToUpdate(){
-    this.setState({path: current_folder})
-    console.log(this.state);
-    for (let i = 0; i < data.length; i++){
-      if(data[i]["path"] == this.state.path){
-        this.revData.push(data[i]);
-        
-      }
-    }
-  }
-
-  createTable = () => {
-    let table = [];
-
-    let rowCount = parseInt(data.length/6);
-    let lastRow = data.length - rowCount*6;
-    // let revData = []
-    // for (let i = 0; i < data.length; i++){
-    //   if(data[i]["path"] == this.state.path){
-    //     revData.push(data[i]);
-    //     console.log(table)
-    //   }
-    // }
-
-    for (let i = 0; i < rowCount; i++){
-      let childer = [];
-      for (let j = 0; j < 6; j++){
-        let handleToUpdate = this.handleToUpdate;
-        childer.push(<div class="col-sm-2"><Cell st={this.revData[i*6+j]} handle={handleToUpdate.bind(this)}/></div>);
-      }
-      table.push(<div class="row">{childer}</div>);
-      
-    }
-    if (lastRow > 0){
-      let childer = [];
-      for(let i = 0; i < lastRow; i++){
-        let handleToUpdate = this.handleToUpdate;
-        childer.push(<div class="col-sm-2"><Cell st={this.revData[rowCount*6+i]} handle={handleToUpdate.bind(this)}/></div>);
-      }
-      table.push(<div class="row">{childer}</div>);
-    }
-
-    return table;
-  }
-  
-  render(){
-    return(
-      <div class="container" id='cont'>
-        {this.createTable()}
-      </div>
-    );
-  }
-}
-
-if (current_folder == ""){
-  current_folder = getRootDir();
-}
-loadNewPage();
+ReactDOM.render(
+  <NestedEditableDemo />,
+  file_container
+)

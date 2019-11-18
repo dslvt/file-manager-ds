@@ -5,39 +5,54 @@ import FileBrowser, {Icons} from 'react-keyed-file-browser'
 
 
 var file_container = document.querySelector(".files");
+var st = {files:[]}
+for(let i = 0; i < data.length; i++){
+  if(data[i]["type"] === "file"){
+    st.files.push({key: data[i]["path"]+data[i]["name"], size: 2})
+  }else{
+    st.files.push({key: data[i]["path"]+data[i]["name"] + '/', size: 0})
+  }
+}
+
+
 
 class NestedEditableDemo extends React.Component {
-  state = {
-    files: [
-      {
-        key: 'photos/animals/cat in a hat.png',
-        size: 1.5 * 1024 * 1024,
-      },
-      {
-        key: 'photos/animals/kitten_ball.png',
-        size: 545 * 1024,
-      },
-      {
-        key: 'photos/animals/elephants.png',
-        size: 52 * 1024,
-      },
-      {
-        key: 'photos/funny fall.gif',
-        size: 13.2 * 1024 * 1024,
-      },
-      {
-        key: 'photos/holiday.jpg',
-        size: 85 * 1024,
-      },
-      {
-        key: 'documents/letter chunks.doc',
-        size: 480 * 1024,
-      },
-      {
-        key: 'documents/export.pdf',
-        size: 4.2 * 1024 * 1024,
-      },
-    ],
+  // state = {
+  //   files: [
+  //     {
+  //       key: 'photos/animals/cat in a hat.png',
+  //       size: 1.5 * 1024 * 1024,
+  //     },
+  //     {
+  //       key: 'photos/animals/kitten_ball.png',
+  //       size: 545 * 1024,
+  //     },
+  //     {
+  //       key: 'photos/animals/elephants.png',
+  //       size: 52 * 1024,
+  //     },
+  //     {
+  //       key: 'photos/funny fall.gif',
+  //       size: 13.2 * 1024 * 1024,
+  //     },
+  //     {
+  //       key: 'photos/holiday.jpg',
+  //       size: 85 * 1024,
+  //     },
+  //     {
+  //       key: 'documents/letter chunks.doc',
+  //       size: 480 * 1024,
+  //     },
+  //     {
+  //       key: 'documents/export.pdf',
+  //       size: 4.2 * 1024 * 1024,
+  //     },
+  //   ],
+  // }
+
+  constructor(props){
+    super(props);
+    // this.state.files = props.dt.files;
   }
 
   handleCreateFolder = (key) => {
@@ -78,6 +93,7 @@ class NestedEditableDemo extends React.Component {
       return state
     })
   }
+
   handleRenameFolder = (oldKey, newKey) => {
     this.setState(state => {
       const newFiles = []
@@ -140,7 +156,7 @@ class NestedEditableDemo extends React.Component {
   render() {
     return (
       <FileBrowser
-        files={this.state.files}
+        files={this.props["dt"]["files"]}
         icons={Icons.FontAwesome(4)}
 
         onCreateFolder={this.handleCreateFolder}
@@ -157,6 +173,6 @@ class NestedEditableDemo extends React.Component {
 }
 
 ReactDOM.render(
-  <NestedEditableDemo />,
+  <NestedEditableDemo dt={st}/>,
   file_container
 )

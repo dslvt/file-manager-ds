@@ -5,14 +5,9 @@ import FileBrowser, {Icons} from 'react-keyed-file-browser'
 
 
 var file_container = document.querySelector(".files");
-var st = {files:[]}
-for(let i = 0; i < data.length; i++){
-  if(data[i]["type"] === "file"){
-    st.files.push({key: data[i]["path"]+data[i]["name"], size: 2})
-  }else{
-    st.files.push({key: data[i]["path"]+data[i]["name"] + '/', size: 0})
-  }
-}
+
+
+var server = 'https://my-json-server.typicode.com/slvt1/file-manager-ds/data';
 
 
 
@@ -53,6 +48,30 @@ class NestedEditableDemo extends React.Component {
   constructor(props){
     super(props);
     // this.state.files = props.dt.files;
+    this.state = {
+      files : []
+    }
+  }
+
+  normalize_data(data) {
+    console.log(data);
+    let st = [];
+    for(let i = 0; i < data.length; i++){
+      if(data[i]["type"] === "file"){
+        st.push({key: data[i]["path"]+data[i]["name"], size: 2})
+      }else{
+        st.push({key: data[i]["path"]+data[i]["name"] + '/', size: 0})
+      }
+    }
+    return st;
+  }
+
+  componentDidMount(){
+    fetch(server)
+    .then(res => res.json())
+    .then((rdata) => {
+      this.setState({dt: rdata})
+    }).catch(console.log)
   }
 
   handleCreateFolder = (key) => {
@@ -156,7 +175,7 @@ class NestedEditableDemo extends React.Component {
   render() {
     return (
       <FileBrowser
-        files={this.props["dt"]["files"]}
+        files={this.state.dt}
         icons={Icons.FontAwesome(4)}
 
         onCreateFolder={this.handleCreateFolder}
@@ -173,6 +192,12 @@ class NestedEditableDemo extends React.Component {
 }
 
 ReactDOM.render(
-  <NestedEditableDemo dt={st}/>,
+  <NestedEditableDemo />,
   file_container
 )
+
+fetch(server)
+.then(res=>res.json())
+.then((rdata) => {
+  console.log('132');
+}).catch(console.log);

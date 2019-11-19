@@ -1,24 +1,16 @@
 {
 "data":[
     {
-    "id": 1,
-    "name": "a.txt",
-    "type": "file", 
-    "path": "/home/buldiga/homework/"},
+    "key": "/home/buldiga/homework/a.txt",
+    "size": "2"},
     {
-    "id": 2,
-    "name": "b.txt",
-    "type": "file", 
-    "path": "/home/buldiga/homework/"},
+    "key": "/home/buldiga/homework/b.txt",
+    "size": "2"},
     {
-    "id": 3,
-    "name": "c.txt",
-    "type": "file", 
-    "path": "/home/buldiga/homework/"},
+    "key": "/home/buldiga/homework/c.txt",
+    "size": "2"},
     {
-    "id": 4,
-    "name": "cp",
-    "type": "folder", 
-    "path": "/home/buldiga/homework/"
+    "key": "/home/buldiga/homework/cp/",
+    "size" : "0", 
     }
 ]}

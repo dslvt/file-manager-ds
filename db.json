@@ -2,15 +2,15 @@
 "data":[
     {
     "key": "/home/buldiga/homework/a.txt",
-    "size": "2"},
+    "size": "2", },
     {
     "key": "/home/buldiga/homework/b.txt",
-    "size": "2"},
+    "size": "2", },
     {
     "key": "/home/buldiga/homework/c.txt",
-    "size": "2"},
+    "size": "2", },
     {
     "key": "/home/buldiga/homework/cp/",
-    "size" : "0", 
-    }
-]}
+    "size" : "0", },
+]
+}
